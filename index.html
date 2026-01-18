@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZORPID (ZRP) | Typography</title>
+    <style>
+        /* Modern, elegant reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            /* Premium Sans-Serif Font Stack */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .text-wrapper {
+            font-size: 4rem;
+            font-weight: 300; /* Light weight for elegance */
+            letter-spacing: 0.15em;
+            color: #000000;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* The animated text target */
+        #typed-text {
+            min-height: 1.2em;
+        }
+
+        /* Custom Cursor Styling */
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 0.8em;
+            background-color: #000000;
+            margin-left: 4px;
+            vertical-align: middle;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .text-wrapper {
+                font-size: 2.5rem;
+                letter-spacing: 0.1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="text-wrapper">
+            <span id="typed-text"></span><span class="cursor"></span>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * Typography Controller
+         * Handles the write and erase logic for "ZORPID (ZRP)"
+         */
+        const textElement = document.getElementById('typed-text');
+        const phrase = "ZORPID (ZRP)";
+        
+        let isDeleting = false;
+        let charIndex = 0;
+        
+        // Timing constants for smooth feel
+        const TYPE_SPEED = 100;      // Speed of typing
+        const ERASE_SPEED = 150;      // Speed of erasing (usually faster)
+        const WAIT_BEFORE_ERASE = 3000; // Pause when word is finished
+        const WAIT_BEFORE_RETYPE = 1000; // Pause when word is gone
+
+        function type() {
+            const currentText = phrase.substring(0, charIndex);
+            textElement.textContent = currentText;
+
+            let delta = isDeleting ? ERASE_SPEED : TYPE_SPEED;
+
+            if (!isDeleting && charIndex === phrase.length) {
+                // Phrase completed: Wait before starting to erase
+                isDeleting = true;
+                delta = WAIT_BEFORE_ERASE;
+            } else if (isDeleting && charIndex === 0) {
+                // Erase completed: Wait before starting to type again
+                isDeleting = false;
+                delta = WAIT_BEFORE_RETYPE;
+            }
+
+            // Increment/Decrement index
+            if (!isDeleting && charIndex < phrase.length) {
+                charIndex++;
+            } else if (isDeleting && charIndex > 0) {
+                charIndex--;
+            }
+
+            setTimeout(type, delta);
+        }
+
+        // Initialize animation on load
+        window.onload = () => {
+            type();
+        };
+    </script>
+</body>
+</html>
